@@ -139,7 +139,10 @@ class GvmConnection(XmlReader):
                 # Connection was closed by server
                 raise GvmError("Remote closed the connection")
 
-            self._feed_xml(data)
+            clean_data = data.decode("utf-8", errors="ignore")
+            clean_data = clean_data.replace('&#', '')
+            self._parser.feed(clean_data.encode())
+            #self._feed_xml(data)
 
             response += data.decode("utf-8", errors="ignore")
 
